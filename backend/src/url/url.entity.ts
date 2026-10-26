@@ -12,6 +12,7 @@ import { appDataSource } from "../config/db.config.js";
 @Entity("url_entity")
 @Index('Idx_Original_Url',['originalUrl'])
 @Index('Idx_Short_Url',['shortUrl'],{unique:true})
+@Index('Idx_Url_Aliase',['aliase'],{unique:true})
 export class urlEntity {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
@@ -31,6 +32,6 @@ export class urlEntity {
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  @DeleteDateColumn()
+  @Column({type:'timestamp'})
   expiresAt!: Date;
 }

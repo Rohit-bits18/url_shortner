@@ -2,10 +2,12 @@ import { randomInt } from "crypto";
 import { appDataSource } from "../config/db.config.js";
 import { baseAlgo } from "../utils/baseAlgoritm.js";
 import { urlEntity } from "./url.entity.js";
+import cron from 'node-cron'
 export const urlRepository = appDataSource.getRepository(urlEntity);
 export const addUrl = async function (args: { url: string; aliase?: string }) {
   const create = urlRepository.create({
     originalUrl: args.url,
+    expiresAt: new Date(Date.now()+ 24 * 60 * 60 * 1000), 
   });
   if (!args.aliase) {
     const randomNo = Math.ceil(randomInt(1000,10000) * 100000);
@@ -23,9 +25,12 @@ export const getOgUrl =async function(key:string){
         where:[{aliase:key},{shortUrl:key}]
     })
 
+
     if(!getData){
         throw new Error("url is not present");
     }
 
     return getData;
 } 
+
+
